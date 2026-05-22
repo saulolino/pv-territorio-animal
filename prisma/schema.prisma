@@ -1,0 +1,262 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Regiões Administrativas do DF ───────────────────────────────────────────
+model RegiaoAdministrativa {
+  id       Int    @id @default(autoincrement())
+  codigoRa String @unique @map("codigo_ra") @db.VarChar(10)
+  nome     String @db.VarChar(100)
+  sigla    String? @db.VarChar(10)
+  regiao   String? @db.VarChar(50)
+
+  protetores          PerfilProtetor[]
+  adotantes           PerfilAdotante[]
+  organizacoes        Organizacao[]
+  animais             Animal[]
+
+  @@map("regioes_administrativas")
+}
+
+// ─── Organizações (abrigos, ONGs) ────────────────────────────────────────────
+model Organizacao {
+  id          String   @id @default(uuid()) @db.Uuid
+  nome        String   @db.VarChar(255)
+  tipo        TipoOrganizacao
+  cnpj        String?  @db.VarChar(20)
+  raId        Int?     @map("ra_id")
+  ra          RegiaoAdministrativa? @relation(fields: [raId], references: [id])
+  endereco    String?  @db.Text
+  telefone    String?  @db.VarChar(20)
+  email       String?  @db.VarChar(255)
+  site        String?  @db.VarChar(255)
+  descricao   String?  @db.Text
+  verificada  Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  protetores  PerfilProtetor[]
+
+  @@map("organizacoes")
+}
+
+// ─── Usuários ─────────────────────────────────────────────────────────────────
+model Usuario {
+  id                String    @id @default(uuid()) @db.Uuid
+  email             String    @unique @db.VarChar(255)
+  senhaHash         String    @map("senha_hash") @db.VarChar(255)
+  nomeCompleto      String    @map("nome_completo") @db.VarChar(255)
+  telefone          String?   @db.VarChar(20)
+  tipo              TipoUsuario
+  emailVerificado   Boolean   @default(false) @map("email_verificado")
+  tokenVerificacao  String?   @map("token_verificacao") @db.VarChar(255)
+  tokenExpiraEm     DateTime? @map("token_expira_em")
+  tokenReset        String?   @map("token_reset") @db.VarChar(255)
+  tokenResetExpira  DateTime? @map("token_reset_expira")
+  ativo             Boolean   @default(true)
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  perfilProtetor  PerfilProtetor?
+  perfilAdotante  PerfilAdotante?
+
+  @@map("usuarios")
+}
+
+// ─── Perfis de Protetores ─────────────────────────────────────────────────────
+model PerfilProtetor {
+  id                  String   @id @default(uuid()) @db.Uuid
+  usuarioId           String   @unique @map("usuario_id") @db.Uuid
+  usuario             Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  cpfCriptografado    String?  @map("cpf_criptografado") @db.Text
+  dataNascimento      DateTime? @map("data_nascimento") @db.Date
+  tipoProtetor        TipoProtetor @map("tipo_protetor")
+  organizacaoId       String?  @map("organizacao_id") @db.Uuid
+  organizacao         Organizacao? @relation(fields: [organizacaoId], references: [id])
+  raId                Int?     @map("ra_id")
+  ra                  RegiaoAdministrativa? @relation(fields: [raId], references: [id])
+  descricao           String?  @db.Text
+  fotoPerfil          String?  @map("foto_perfil_url") @db.VarChar(500)
+  redesSociais        Json     @default("{}") @map("redes_sociais")
+  verificado          Boolean  @default(false)
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  animais             Animal[]
+  solicitacoes        SolicitacaoAdocao[]
+
+  @@map("perfis_protetores")
+}
+
+// ─── Animais ──────────────────────────────────────────────────────────────────
+model Animal {
+  id                    String        @id @default(uuid()) @db.Uuid
+  slug                  String        @unique @db.VarChar(255)
+  protetorId            String        @map("protetor_id") @db.Uuid
+  protetor              PerfilProtetor @relation(fields: [protetorId], references: [id])
+  nome                  String        @db.VarChar(100)
+  especie               EspecieAnimal
+  raca                  String?       @db.VarChar(100)
+  sexo                  SexoAnimal
+  idadeEstimadaMeses    Int?          @map("idade_estimada_meses")
+  porte                 PorteAnimal
+  cor                   String?       @db.VarChar(100)
+  descricao             String        @db.Text
+  castrado              Boolean?
+  vacinado              Boolean?
+  vermifugado           Boolean?
+  microchipado          Boolean       @default(false)
+  necessidadesEspeciais String?       @map("necessidades_especiais") @db.Text
+  bomComCriancas        Boolean?      @map("bom_com_criancas")
+  bomComOutrosAnimais   Boolean?      @map("bom_com_outros_animais")
+  bomComGatos           Boolean?      @map("bom_com_gatos")
+  raId                  Int?          @map("ra_id")
+  ra                    RegiaoAdministrativa? @relation(fields: [raId], references: [id])
+  status                StatusAnimal  @default(disponivel)
+  destaque              Boolean       @default(false)
+  createdAt             DateTime      @default(now()) @map("created_at")
+  updatedAt             DateTime      @updatedAt @map("updated_at")
+
+  fotos                 FotoAnimal[]
+  solicitacoes          SolicitacaoAdocao[]
+
+  @@index([status])
+  @@index([especie])
+  @@index([raId])
+  @@index([protetorId])
+  @@map("animais")
+}
+
+// ─── Fotos dos Animais ────────────────────────────────────────────────────────
+model FotoAnimal {
+  id        String   @id @default(uuid()) @db.Uuid
+  animalId  String   @map("animal_id") @db.Uuid
+  animal    Animal   @relation(fields: [animalId], references: [id], onDelete: Cascade)
+  url       String   @db.VarChar(500)
+  ordem     Int      @default(0)
+  principal Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("fotos_animais")
+}
+
+// ─── Perfis de Adotantes ──────────────────────────────────────────────────────
+model PerfilAdotante {
+  id                       String   @id @default(uuid()) @db.Uuid
+  usuarioId                String   @unique @map("usuario_id") @db.Uuid
+  usuario                  Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  cpfCriptografado         String?  @map("cpf_criptografado") @db.Text
+  dataNascimento           DateTime? @map("data_nascimento") @db.Date
+  enderecoCompleto         String?  @map("endereco_completo") @db.Text
+  raId                     Int?     @map("ra_id")
+  ra                       RegiaoAdministrativa? @relation(fields: [raId], references: [id])
+  tipoMoradia              TipoMoradia? @map("tipo_moradia")
+  temAreaExterna           Boolean? @map("tem_area_externa")
+  temOutrosAnimais         Boolean  @default(false) @map("tem_outros_animais")
+  descricaoOutrosAnimais   String?  @map("descricao_outros_animais") @db.Text
+  jaAdotouAntes            Boolean  @default(false) @map("ja_adotou_antes")
+  motivoAdocao             String?  @map("motivo_adocao") @db.Text
+  conheceCustos            Boolean  @default(false) @map("conhece_custos")
+  aceitaVisita             Boolean  @default(false) @map("aceita_visita")
+  fotoPerfil               String?  @map("foto_perfil_url") @db.VarChar(500)
+  perfilCompleto           Boolean  @default(false) @map("perfil_completo")
+  createdAt                DateTime @default(now()) @map("created_at")
+  updatedAt                DateTime @updatedAt @map("updated_at")
+
+  solicitacoes  SolicitacaoAdocao[]
+
+  @@map("perfis_adotantes")
+}
+
+// ─── Solicitações de Adoção ───────────────────────────────────────────────────
+model SolicitacaoAdocao {
+  id                String          @id @default(uuid()) @db.Uuid
+  animalId          String          @map("animal_id") @db.Uuid
+  animal            Animal          @relation(fields: [animalId], references: [id])
+  adotanteId        String          @map("adotante_id") @db.Uuid
+  adotante          PerfilAdotante  @relation(fields: [adotanteId], references: [id])
+  protetorId        String          @map("protetor_id") @db.Uuid
+  protetor          PerfilProtetor  @relation(fields: [protetorId], references: [id])
+  status            StatusSolicitacao @default(pendente)
+  mensagemAdotante  String          @map("mensagem_adotante") @db.Text
+  notaInterna       String?         @map("nota_interna") @db.Text
+  dataResposta      DateTime?       @map("data_resposta")
+  dataConclusao     DateTime?       @map("data_conclusao")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  @@unique([animalId, adotanteId])
+  @@index([animalId])
+  @@index([adotanteId])
+  @@index([protetorId])
+  @@index([status])
+  @@map("solicitacoes_adocao")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+enum TipoUsuario {
+  protetor
+  adotante
+  admin
+}
+
+enum TipoProtetor {
+  independente
+  lar_temporario
+  abrigo
+  ong
+}
+
+enum TipoOrganizacao {
+  abrigo
+  ong
+  empresa
+  publica
+}
+
+enum EspecieAnimal {
+  cachorro
+  gato
+  outro
+}
+
+enum SexoAnimal {
+  macho
+  femea
+}
+
+enum PorteAnimal {
+  mini
+  pequeno
+  medio
+  grande
+  gigante
+}
+
+enum StatusAnimal {
+  disponivel
+  em_processo_adocao
+  adotado
+  indisponivel_temporario
+  removido
+}
+
+enum StatusSolicitacao {
+  pendente
+  em_analise
+  aprovada
+  rejeitada
+  cancelada
+  concluida
+}
+
+enum TipoMoradia {
+  casa_propria
+  alugada
+  cedida
+  outros
+}
