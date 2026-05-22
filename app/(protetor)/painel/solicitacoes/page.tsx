@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+const Chat = dynamic(() => import("@/components/Chat"), { ssr: false });
 
 interface Solicitacao {
   id: string;
@@ -26,6 +29,11 @@ export default function SolicitacoesPage() {
   const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [meuId, setMeuId] = useState("");
+
+  useEffect(() => {
+    fetch("/api/auth/me").then((r) => r.json()).then((me) => setMeuId(me.id ?? ""));
+  }, []);
 
   useEffect(() => {
     fetch("/api/solicitacoes")
@@ -82,7 +90,7 @@ export default function SolicitacoesPage() {
               </h2>
               <div className="space-y-3">
                 {pendentes.map((s) => (
-                  <SolicitacaoCard key={s.id} s={s} onUpdate={atualizar} updating={updating === s.id} />
+                  <SolicitacaoCard key={s.id} s={s} onUpdate={atualizar} updating={updating === s.id} meuId={meuId} />
                 ))}
               </div>
             </div>
@@ -95,7 +103,7 @@ export default function SolicitacoesPage() {
               </h2>
               <div className="space-y-3">
                 {historico.map((s) => (
-                  <SolicitacaoCard key={s.id} s={s} onUpdate={atualizar} updating={updating === s.id} />
+                  <SolicitacaoCard key={s.id} s={s} onUpdate={atualizar} updating={updating === s.id} meuId={meuId} />
                 ))}
               </div>
             </div>
@@ -110,13 +118,16 @@ function SolicitacaoCard({
   s,
   onUpdate,
   updating,
+  meuId,
 }: {
   s: Solicitacao;
   onUpdate: (id: string, status: string) => void;
   updating: boolean;
+  meuId: string;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [tab, setTab] = useState<"mensagem" | "chat">("mensagem");
   const st = statusLabels[s.status] || { label: s.status, color: "bg-gray-100 text-gray-600" };
+  const podeChat = ["pendente", "em_analise", "aprovada"].includes(s.status);
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5">
@@ -136,19 +147,35 @@ function SolicitacaoCard({
             {new Date(s.createdAt).toLocaleDateString("pt-BR")}
           </div>
         </div>
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-xs text-gray-500 hover:text-gray-700 transition-colors flex-shrink-0"
-        >
-          {expanded ? "Ocultar" : "Ver mensagem"}
-        </button>
       </div>
 
-      {expanded && (
-        <div className="mt-3 bg-gray-50 rounded-lg p-3 text-sm text-gray-700">
-          {s.mensagemAdotante}
-        </div>
-      )}
+      <div className="flex gap-3 mt-3 border-b border-gray-100">
+        <button
+          onClick={() => setTab("mensagem")}
+          className={`text-xs pb-1.5 border-b-2 transition-colors ${tab === "mensagem" ? "border-green-600 text-green-700 font-medium" : "border-transparent text-gray-400"}`}
+        >
+          Mensagem inicial
+        </button>
+        {podeChat && (
+          <button
+            onClick={() => setTab("chat")}
+            className={`text-xs pb-1.5 border-b-2 transition-colors ${tab === "chat" ? "border-green-600 text-green-700 font-medium" : "border-transparent text-gray-400"}`}
+          >
+            Chat
+          </button>
+        )}
+      </div>
+
+      <div className="mt-3">
+        {tab === "mensagem" && (
+          <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-700">
+            {s.mensagemAdotante}
+          </div>
+        )}
+        {tab === "chat" && podeChat && meuId && (
+          <Chat solicitacaoId={s.id} meuTipo="protetor" meuId={meuId} />
+        )}
+      </div>
 
       {["pendente", "em_analise"].includes(s.status) && (
         <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">

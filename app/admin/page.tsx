@@ -30,6 +30,16 @@ interface Animal {
   protetor: { usuario: { nomeCompleto: string } };
 }
 
+interface Protetor {
+  id: string;
+  tipoProtetor: string;
+  verificado: boolean;
+  createdAt: string;
+  usuario: { nomeCompleto: string; email: string };
+  ra: { nome: string; sigla: string } | null;
+  _count: { animais: number };
+}
+
 const statusLabels: Record<string, string> = {
   disponivel: "Disponível",
   em_processo_adocao: "Em processo",
@@ -42,8 +52,9 @@ export default function AdminPage() {
   const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
   const [animais, setAnimais] = useState<Animal[]>([]);
+  const [protetores, setProtetores] = useState<Protetor[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<"metricas" | "animais">("metricas");
+  const [tab, setTab] = useState<"metricas" | "animais" | "protetores">("metricas");
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -53,16 +64,29 @@ export default function AdminPage() {
         return Promise.all([
           fetch("/api/admin/stats").then((r) => r.json()),
           fetch("/api/admin/animais").then((r) => r.json()),
+          fetch("/api/admin/protetores").then((r) => r.json()),
         ]);
       })
       .then((results) => {
         if (results) {
           setStats(results[0]);
           setAnimais(results[1]);
+          setProtetores(results[2]);
         }
       })
       .finally(() => setLoading(false));
   }, [router]);
+
+  async function toggleVerificado(id: string, verificado: boolean) {
+    await fetch(`/api/admin/protetores/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ verificado: !verificado }),
+    });
+    setProtetores((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, verificado: !verificado } : p))
+    );
+  }
 
   async function toggleDestaque(slug: string, destaque: boolean) {
     await fetch(`/api/animais/${slug}`, {
@@ -124,7 +148,7 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 border-b border-gray-200">
-          {(["metricas", "animais"] as const).map((t) => (
+          {(["metricas", "animais", "protetores"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -132,7 +156,7 @@ export default function AdminPage() {
                 tab === t ? "border-green-600 text-green-700" : "border-transparent text-gray-500 hover:text-gray-700"
               }`}
             >
-              {t === "metricas" ? "Métricas" : "Animais"}
+              {t === "metricas" ? "Métricas" : t === "animais" ? "Animais" : "Protetores"}
             </button>
           ))}
         </div>
@@ -246,6 +270,56 @@ export default function AdminPage() {
             </table>
             {animais.length === 0 && (
               <div className="text-center py-8 text-gray-400">Nenhum animal.</div>
+            )}
+          </div>
+        )}
+
+        {tab === "protetores" && (
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="border-b border-gray-200 bg-gray-50">
+                <tr>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Protetor</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600 hidden md:table-cell">RA</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Animais</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Verificado</th>
+                  <th className="py-3 px-4" />
+                </tr>
+              </thead>
+              <tbody>
+                {protetores.map((p) => (
+                  <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 px-4">
+                      <div className="font-medium text-gray-800">{p.usuario.nomeCompleto}</div>
+                      <div className="text-xs text-gray-400">{p.usuario.email}</div>
+                    </td>
+                    <td className="py-3 px-4 hidden md:table-cell text-gray-600 text-xs">
+                      {p.ra?.sigla ?? "—"}
+                    </td>
+                    <td className="py-3 px-4 text-gray-600 text-xs">{p._count.animais}</td>
+                    <td className="py-3 px-4">
+                      <button
+                        onClick={() => toggleVerificado(p.id, p.verificado)}
+                        className={`text-xs px-2 py-1 rounded transition-colors ${
+                          p.verificado
+                            ? "bg-green-100 text-green-700 hover:bg-green-200"
+                            : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                        }`}
+                      >
+                        {p.verificado ? "✓ Verificado" : "Não verificado"}
+                      </button>
+                    </td>
+                    <td className="py-3 px-4">
+                      <Link href={`/protetores/${p.id}`} target="_blank" className="text-xs text-blue-600 hover:underline">
+                        Ver →
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {protetores.length === 0 && (
+              <div className="text-center py-8 text-gray-400">Nenhum protetor.</div>
             )}
           </div>
         )}
