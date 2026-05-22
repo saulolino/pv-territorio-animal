@@ -112,7 +112,7 @@ const TIPOS_MORADIA = ["casa_propria", "alugada", "cedida", "outros"] as const;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function pick<T>(arr: T[], idx: number): T {
+function pick<T>(arr: readonly T[], idx: number): T {
   return arr[idx % arr.length];
 }
 

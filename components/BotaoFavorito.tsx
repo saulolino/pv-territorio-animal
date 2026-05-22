@@ -10,10 +10,12 @@ interface Props {
 export default function BotaoFavorito({ animalId, className = "" }: Props) {
   const [favoritado, setFavoritado] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [autenticado, setAutenticado] = useState(true);
 
   useEffect(() => {
     fetch("/api/favoritos")
       .then((r) => {
+        if (r.status === 401) { setAutenticado(false); return []; }
         if (!r.ok) return [];
         return r.json();
       })
@@ -39,7 +41,7 @@ export default function BotaoFavorito({ animalId, className = "" }: Props) {
     }).catch(() => setFavoritado(!novoEstado));
   }
 
-  if (loading) return null;
+  if (loading || !autenticado) return null;
 
   return (
     <button
