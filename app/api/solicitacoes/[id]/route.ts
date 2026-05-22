@@ -63,6 +63,30 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     },
   });
 
+  if (status === "aprovada") {
+    await prisma.$transaction([
+      prisma.solicitacaoAdocao.updateMany({
+        where: {
+          animalId: sol.animalId,
+          id: { not: params.id },
+          status: { in: ["pendente", "em_analise"] },
+        },
+        data: { status: "cancelada" },
+      }),
+      prisma.animal.update({
+        where: { id: sol.animalId },
+        data: { status: "em_processo_adocao" },
+      }),
+    ]);
+  }
+
+  if (status === "concluida") {
+    await prisma.animal.update({
+      where: { id: sol.animalId },
+      data: { status: "adotado" },
+    });
+  }
+
   if (["aprovada", "rejeitada"].includes(status)) {
     await sendAdoptionStatusEmail(
       sol.adotante.usuario.email,

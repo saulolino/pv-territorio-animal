@@ -36,6 +36,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Você já possui uma solicitação para este animal." }, { status: 409 });
   }
 
+  const ativas = await prisma.solicitacaoAdocao.count({
+    where: { adotanteId: adotante.id, status: { in: ["pendente", "em_analise"] } },
+  });
+  if (ativas >= 3) {
+    return NextResponse.json(
+      { error: "Você já possui 3 solicitações ativas. Aguarde uma resposta antes de solicitar novamente." },
+      { status: 400 }
+    );
+  }
+
   const solicitacao = await prisma.solicitacaoAdocao.create({
     data: {
       animalId,
@@ -80,6 +90,7 @@ export async function GET(req: NextRequest) {
         adotante: { include: { usuario: { select: { nomeCompleto: true, email: true, telefone: true } } } },
       },
       orderBy: { createdAt: "desc" },
+      take: 200,
     });
     return NextResponse.json(solicitacoes);
   }

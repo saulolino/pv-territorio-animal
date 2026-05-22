@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { rateLimit } from "@/lib/rateLimit";
 
 export async function GET(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown";
+  if (!rateLimit(`public-animais:${ip}`, 60, 60_000)) {
+    return NextResponse.json(
+      { error: "Muitas requisições. Tente novamente em 1 minuto." },
+      { status: 429, headers: { "Access-Control-Allow-Origin": "*" } }
+    );
+  }
+
   const { searchParams } = new URL(req.url);
   const especie = searchParams.get("especie");
   const sexo = searchParams.get("sexo");
