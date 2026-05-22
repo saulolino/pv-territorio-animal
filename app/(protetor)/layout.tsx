@@ -14,6 +14,7 @@ export default function ProtetorLayout({ children }: { children: React.ReactNode
   const pathname = usePathname();
   const [session, setSession] = useState<Session | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [msgBadge, setMsgBadge] = useState(0);
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -33,10 +34,22 @@ export default function ProtetorLayout({ children }: { children: React.ReactNode
     router.push("/login");
   }
 
-  const nav = [
+  useEffect(() => {
+    const fetchBadge = () => {
+      fetch("/api/mensagens/nao-lidas")
+        .then((r) => r.json())
+        .then((d) => setMsgBadge(d.total ?? 0))
+        .catch(() => {});
+    };
+    fetchBadge();
+    const interval = setInterval(fetchBadge, 30_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const nav: ({ href: string; label: string } | { href: string; label: string; badge: number })[] = [
     { href: "/painel", label: "Visão Geral" },
     { href: "/painel/animais", label: "Meus Animais" },
-    { href: "/painel/solicitacoes", label: "Solicitações" },
+    { href: "/painel/solicitacoes", label: "Solicitações", badge: msgBadge },
     { href: "/painel/perfil", label: "Meu Perfil" },
   ];
 
@@ -59,13 +72,18 @@ export default function ProtetorLayout({ children }: { children: React.ReactNode
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors relative ${
                     pathname === item.href
                       ? "bg-green-50 text-green-700"
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                   }`}
                 >
                   {item.label}
+                  {"badge" in item && item.badge > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none">
+                      {item.badge > 9 ? "9+" : item.badge}
+                    </span>
+                  )}
                 </Link>
               ))}
             </nav>

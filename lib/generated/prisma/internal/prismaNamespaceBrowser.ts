@@ -58,6 +58,7 @@ export const ModelName = {
   Animal: 'Animal',
   FotoAnimal: 'FotoAnimal',
   PerfilAdotante: 'PerfilAdotante',
+  Favorito: 'Favorito',
   Mensagem: 'Mensagem',
   SolicitacaoAdocao: 'SolicitacaoAdocao'
 } as const
@@ -210,6 +211,16 @@ export const PerfilAdotanteScalarFieldEnum = {
 } as const
 
 export type PerfilAdotanteScalarFieldEnum = (typeof PerfilAdotanteScalarFieldEnum)[keyof typeof PerfilAdotanteScalarFieldEnum]
+
+
+export const FavoritoScalarFieldEnum = {
+  id: 'id',
+  adotanteId: 'adotanteId',
+  animalId: 'animalId',
+  createdAt: 'createdAt'
+} as const
+
+export type FavoritoScalarFieldEnum = (typeof FavoritoScalarFieldEnum)[keyof typeof FavoritoScalarFieldEnum]
 
 
 export const MensagemScalarFieldEnum = {

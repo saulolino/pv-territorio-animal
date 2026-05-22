@@ -53,6 +53,11 @@ export type FotoAnimal = Prisma.FotoAnimalModel
  */
 export type PerfilAdotante = Prisma.PerfilAdotanteModel
 /**
+ * Model Favorito
+ * 
+ */
+export type Favorito = Prisma.FavoritoModel
+/**
  * Model Mensagem
  * 
  */

@@ -37,12 +37,15 @@ export async function GET(req: NextRequest) {
   const page = Math.max(1, Number(sp.get("page") || 1));
   const limit = 12;
 
+  const q = sp.get("q")?.trim();
+
   const where: Record<string, unknown> = { status: "disponivel" };
   if (especie) where.especie = especie;
   if (sexo) where.sexo = sexo;
   if (porte) where.porte = porte;
   if (raId) where.raId = Number(raId);
   if (castrado !== null && castrado !== "") where.castrado = castrado === "true";
+  if (q) where.nome = { contains: q, mode: "insensitive" };
 
   const [animais, total] = await Promise.all([
     prisma.animal.findMany({

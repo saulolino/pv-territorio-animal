@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+
+const BotaoFavorito = dynamic(() => import("@/components/BotaoFavorito"), { ssr: false });
 
 const MapaRAs = dynamic(() => import("@/components/MapaRAs"), {
   ssr: false,
@@ -57,7 +59,11 @@ function GaleriaContent() {
   const porte = sp.get("porte") ?? "";
   const castrado = sp.get("castrado") ?? "";
   const raId = sp.get("raId") ?? "";
+  const q = sp.get("q") ?? "";
   const page = Number(sp.get("page") ?? 1);
+
+  const [buscaInput, setBuscaInput] = useState(q);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     fetch("/api/territorios/ras")
@@ -73,6 +79,7 @@ function GaleriaContent() {
     if (porte) params.set("porte", porte);
     if (castrado) params.set("castrado", castrado);
     if (raId) params.set("raId", raId);
+    if (q) params.set("q", q);
     params.set("page", page.toString());
     const res = await fetch(`/api/animais?${params}`);
     const data = await res.json();
@@ -80,7 +87,13 @@ function GaleriaContent() {
     setTotal(data.total ?? 0);
     setPages(data.pages ?? 1);
     setLoading(false);
-  }, [especie, sexo, porte, castrado, raId, page]);
+  }, [especie, sexo, porte, castrado, raId, q, page]);
+
+  function handleBuscaChange(value: string) {
+    setBuscaInput(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setFilter("q", value), 400);
+  }
 
   useEffect(() => { loadAnimais(); }, [loadAnimais]);
 
@@ -98,7 +111,7 @@ function GaleriaContent() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const hasFilters = especie || sexo || porte || castrado || raId;
+  const hasFilters = especie || sexo || porte || castrado || raId || q;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -124,6 +137,16 @@ function GaleriaContent() {
 
         {/* Filtros */}
         <div className="flex flex-wrap gap-2 mb-6">
+          <div className="relative">
+            <input
+              type="search"
+              value={buscaInput}
+              onChange={(e) => handleBuscaChange(e.target.value)}
+              placeholder="Buscar por nome..."
+              className="border border-gray-300 rounded-lg pl-8 pr-3 py-1.5 text-sm bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent w-48"
+            />
+            <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
           <select value={especie} onChange={(e) => setFilter("especie", e.target.value)} className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent">
             <option value="">Todas as espécies</option>
             <option value="cachorro">Cachorro</option>
@@ -190,7 +213,10 @@ function GaleriaContent() {
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {animais.map((animal) => (
-                <Link key={animal.id} href={`/animais/${animal.slug}`} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group">
+                <Link key={animal.id} href={`/animais/${animal.slug}`} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group relative">
+                  <div className="absolute top-2 right-2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-1">
+                    <BotaoFavorito animalId={animal.id} />
+                  </div>
                   <div className="relative aspect-[4/3] bg-gray-100">
                     {animal.fotos[0] ? (
                       <Image

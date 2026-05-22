@@ -323,6 +323,7 @@ export type PerfilAdotanteWhereInput = {
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
   ra?: Prisma.XOR<Prisma.RegiaoAdministrativaNullableScalarRelationFilter, Prisma.RegiaoAdministrativaWhereInput> | null
   solicitacoes?: Prisma.SolicitacaoAdocaoListRelationFilter
+  favoritos?: Prisma.FavoritoListRelationFilter
 }
 
 export type PerfilAdotanteOrderByWithRelationInput = {
@@ -347,6 +348,7 @@ export type PerfilAdotanteOrderByWithRelationInput = {
   usuario?: Prisma.UsuarioOrderByWithRelationInput
   ra?: Prisma.RegiaoAdministrativaOrderByWithRelationInput
   solicitacoes?: Prisma.SolicitacaoAdocaoOrderByRelationAggregateInput
+  favoritos?: Prisma.FavoritoOrderByRelationAggregateInput
 }
 
 export type PerfilAdotanteWhereUniqueInput = Prisma.AtLeast<{
@@ -374,6 +376,7 @@ export type PerfilAdotanteWhereUniqueInput = Prisma.AtLeast<{
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
   ra?: Prisma.XOR<Prisma.RegiaoAdministrativaNullableScalarRelationFilter, Prisma.RegiaoAdministrativaWhereInput> | null
   solicitacoes?: Prisma.SolicitacaoAdocaoListRelationFilter
+  favoritos?: Prisma.FavoritoListRelationFilter
 }, "id" | "usuarioId">
 
 export type PerfilAdotanteOrderByWithAggregationInput = {
@@ -446,6 +449,7 @@ export type PerfilAdotanteCreateInput = {
   usuario: Prisma.UsuarioCreateNestedOneWithoutPerfilAdotanteInput
   ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAdotantesInput
   solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAdotanteInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteUncheckedCreateInput = {
@@ -468,6 +472,7 @@ export type PerfilAdotanteUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAdotanteInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteUpdateInput = {
@@ -490,6 +495,7 @@ export type PerfilAdotanteUpdateInput = {
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutPerfilAdotanteNestedInput
   ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAdotantesNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAdotanteNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAdotanteNestedInput
 }
 
 export type PerfilAdotanteUncheckedUpdateInput = {
@@ -512,6 +518,7 @@ export type PerfilAdotanteUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAdotanteNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAdotanteNestedInput
 }
 
 export type PerfilAdotanteCreateManyInput = {
@@ -744,6 +751,20 @@ export type NullableEnumTipoMoradiaFieldUpdateOperationsInput = {
   set?: $Enums.TipoMoradia | null
 }
 
+export type PerfilAdotanteCreateNestedOneWithoutFavoritosInput = {
+  create?: Prisma.XOR<Prisma.PerfilAdotanteCreateWithoutFavoritosInput, Prisma.PerfilAdotanteUncheckedCreateWithoutFavoritosInput>
+  connectOrCreate?: Prisma.PerfilAdotanteCreateOrConnectWithoutFavoritosInput
+  connect?: Prisma.PerfilAdotanteWhereUniqueInput
+}
+
+export type PerfilAdotanteUpdateOneRequiredWithoutFavoritosNestedInput = {
+  create?: Prisma.XOR<Prisma.PerfilAdotanteCreateWithoutFavoritosInput, Prisma.PerfilAdotanteUncheckedCreateWithoutFavoritosInput>
+  connectOrCreate?: Prisma.PerfilAdotanteCreateOrConnectWithoutFavoritosInput
+  upsert?: Prisma.PerfilAdotanteUpsertWithoutFavoritosInput
+  connect?: Prisma.PerfilAdotanteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PerfilAdotanteUpdateToOneWithWhereWithoutFavoritosInput, Prisma.PerfilAdotanteUpdateWithoutFavoritosInput>, Prisma.PerfilAdotanteUncheckedUpdateWithoutFavoritosInput>
+}
+
 export type PerfilAdotanteCreateNestedOneWithoutSolicitacoesInput = {
   create?: Prisma.XOR<Prisma.PerfilAdotanteCreateWithoutSolicitacoesInput, Prisma.PerfilAdotanteUncheckedCreateWithoutSolicitacoesInput>
   connectOrCreate?: Prisma.PerfilAdotanteCreateOrConnectWithoutSolicitacoesInput
@@ -777,6 +798,7 @@ export type PerfilAdotanteCreateWithoutRaInput = {
   updatedAt?: Date | string
   usuario: Prisma.UsuarioCreateNestedOneWithoutPerfilAdotanteInput
   solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAdotanteInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteUncheckedCreateWithoutRaInput = {
@@ -798,6 +820,7 @@ export type PerfilAdotanteUncheckedCreateWithoutRaInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAdotanteInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteCreateOrConnectWithoutRaInput = {
@@ -869,6 +892,7 @@ export type PerfilAdotanteCreateWithoutUsuarioInput = {
   updatedAt?: Date | string
   ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAdotantesInput
   solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAdotanteInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteUncheckedCreateWithoutUsuarioInput = {
@@ -890,6 +914,7 @@ export type PerfilAdotanteUncheckedCreateWithoutUsuarioInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAdotanteInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteCreateOrConnectWithoutUsuarioInput = {
@@ -927,10 +952,116 @@ export type PerfilAdotanteUpdateWithoutUsuarioInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAdotantesNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAdotanteNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAdotanteNestedInput
 }
 
 export type PerfilAdotanteUncheckedUpdateWithoutUsuarioInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  cpfCriptografado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  enderecoCompleto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  raId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tipoMoradia?: Prisma.NullableEnumTipoMoradiaFieldUpdateOperationsInput | $Enums.TipoMoradia | null
+  temAreaExterna?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  temOutrosAnimais?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  descricaoOutrosAnimais?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jaAdotouAntes?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  motivoAdocao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  conheceCustos?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  aceitaVisita?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fotoPerfil?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perfilCompleto?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAdotanteNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAdotanteNestedInput
+}
+
+export type PerfilAdotanteCreateWithoutFavoritosInput = {
+  id?: string
+  cpfCriptografado?: string | null
+  dataNascimento?: Date | string | null
+  enderecoCompleto?: string | null
+  tipoMoradia?: $Enums.TipoMoradia | null
+  temAreaExterna?: boolean | null
+  temOutrosAnimais?: boolean
+  descricaoOutrosAnimais?: string | null
+  jaAdotouAntes?: boolean
+  motivoAdocao?: string | null
+  conheceCustos?: boolean
+  aceitaVisita?: boolean
+  fotoPerfil?: string | null
+  perfilCompleto?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  usuario: Prisma.UsuarioCreateNestedOneWithoutPerfilAdotanteInput
+  ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAdotantesInput
+  solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAdotanteInput
+}
+
+export type PerfilAdotanteUncheckedCreateWithoutFavoritosInput = {
+  id?: string
+  usuarioId: string
+  cpfCriptografado?: string | null
+  dataNascimento?: Date | string | null
+  enderecoCompleto?: string | null
+  raId?: number | null
+  tipoMoradia?: $Enums.TipoMoradia | null
+  temAreaExterna?: boolean | null
+  temOutrosAnimais?: boolean
+  descricaoOutrosAnimais?: string | null
+  jaAdotouAntes?: boolean
+  motivoAdocao?: string | null
+  conheceCustos?: boolean
+  aceitaVisita?: boolean
+  fotoPerfil?: string | null
+  perfilCompleto?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAdotanteInput
+}
+
+export type PerfilAdotanteCreateOrConnectWithoutFavoritosInput = {
+  where: Prisma.PerfilAdotanteWhereUniqueInput
+  create: Prisma.XOR<Prisma.PerfilAdotanteCreateWithoutFavoritosInput, Prisma.PerfilAdotanteUncheckedCreateWithoutFavoritosInput>
+}
+
+export type PerfilAdotanteUpsertWithoutFavoritosInput = {
+  update: Prisma.XOR<Prisma.PerfilAdotanteUpdateWithoutFavoritosInput, Prisma.PerfilAdotanteUncheckedUpdateWithoutFavoritosInput>
+  create: Prisma.XOR<Prisma.PerfilAdotanteCreateWithoutFavoritosInput, Prisma.PerfilAdotanteUncheckedCreateWithoutFavoritosInput>
+  where?: Prisma.PerfilAdotanteWhereInput
+}
+
+export type PerfilAdotanteUpdateToOneWithWhereWithoutFavoritosInput = {
+  where?: Prisma.PerfilAdotanteWhereInput
+  data: Prisma.XOR<Prisma.PerfilAdotanteUpdateWithoutFavoritosInput, Prisma.PerfilAdotanteUncheckedUpdateWithoutFavoritosInput>
+}
+
+export type PerfilAdotanteUpdateWithoutFavoritosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  cpfCriptografado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  enderecoCompleto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoMoradia?: Prisma.NullableEnumTipoMoradiaFieldUpdateOperationsInput | $Enums.TipoMoradia | null
+  temAreaExterna?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  temOutrosAnimais?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  descricaoOutrosAnimais?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jaAdotouAntes?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  motivoAdocao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  conheceCustos?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  aceitaVisita?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fotoPerfil?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perfilCompleto?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usuario?: Prisma.UsuarioUpdateOneRequiredWithoutPerfilAdotanteNestedInput
+  ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAdotantesNestedInput
+  solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAdotanteNestedInput
+}
+
+export type PerfilAdotanteUncheckedUpdateWithoutFavoritosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   cpfCriptografado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   enderecoCompleto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -969,6 +1100,7 @@ export type PerfilAdotanteCreateWithoutSolicitacoesInput = {
   updatedAt?: Date | string
   usuario: Prisma.UsuarioCreateNestedOneWithoutPerfilAdotanteInput
   ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAdotantesInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteUncheckedCreateWithoutSolicitacoesInput = {
@@ -990,6 +1122,7 @@ export type PerfilAdotanteUncheckedCreateWithoutSolicitacoesInput = {
   perfilCompleto?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAdotanteInput
 }
 
 export type PerfilAdotanteCreateOrConnectWithoutSolicitacoesInput = {
@@ -1027,6 +1160,7 @@ export type PerfilAdotanteUpdateWithoutSolicitacoesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutPerfilAdotanteNestedInput
   ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAdotantesNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAdotanteNestedInput
 }
 
 export type PerfilAdotanteUncheckedUpdateWithoutSolicitacoesInput = {
@@ -1048,6 +1182,7 @@ export type PerfilAdotanteUncheckedUpdateWithoutSolicitacoesInput = {
   perfilCompleto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAdotanteNestedInput
 }
 
 export type PerfilAdotanteCreateManyRaInput = {
@@ -1089,6 +1224,7 @@ export type PerfilAdotanteUpdateWithoutRaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutPerfilAdotanteNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAdotanteNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAdotanteNestedInput
 }
 
 export type PerfilAdotanteUncheckedUpdateWithoutRaInput = {
@@ -1110,6 +1246,7 @@ export type PerfilAdotanteUncheckedUpdateWithoutRaInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAdotanteNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAdotanteNestedInput
 }
 
 export type PerfilAdotanteUncheckedUpdateManyWithoutRaInput = {
@@ -1139,10 +1276,12 @@ export type PerfilAdotanteUncheckedUpdateManyWithoutRaInput = {
 
 export type PerfilAdotanteCountOutputType = {
   solicitacoes: number
+  favoritos: number
 }
 
 export type PerfilAdotanteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   solicitacoes?: boolean | PerfilAdotanteCountOutputTypeCountSolicitacoesArgs
+  favoritos?: boolean | PerfilAdotanteCountOutputTypeCountFavoritosArgs
 }
 
 /**
@@ -1160,6 +1299,13 @@ export type PerfilAdotanteCountOutputTypeDefaultArgs<ExtArgs extends runtime.Typ
  */
 export type PerfilAdotanteCountOutputTypeCountSolicitacoesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SolicitacaoAdocaoWhereInput
+}
+
+/**
+ * PerfilAdotanteCountOutputType without action
+ */
+export type PerfilAdotanteCountOutputTypeCountFavoritosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoritoWhereInput
 }
 
 
@@ -1185,6 +1331,7 @@ export type PerfilAdotanteSelect<ExtArgs extends runtime.Types.Extensions.Intern
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   ra?: boolean | Prisma.PerfilAdotante$raArgs<ExtArgs>
   solicitacoes?: boolean | Prisma.PerfilAdotante$solicitacoesArgs<ExtArgs>
+  favoritos?: boolean | Prisma.PerfilAdotante$favoritosArgs<ExtArgs>
   _count?: boolean | Prisma.PerfilAdotanteCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["perfilAdotante"]>
 
@@ -1260,6 +1407,7 @@ export type PerfilAdotanteInclude<ExtArgs extends runtime.Types.Extensions.Inter
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   ra?: boolean | Prisma.PerfilAdotante$raArgs<ExtArgs>
   solicitacoes?: boolean | Prisma.PerfilAdotante$solicitacoesArgs<ExtArgs>
+  favoritos?: boolean | Prisma.PerfilAdotante$favoritosArgs<ExtArgs>
   _count?: boolean | Prisma.PerfilAdotanteCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PerfilAdotanteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1277,6 +1425,7 @@ export type $PerfilAdotantePayload<ExtArgs extends runtime.Types.Extensions.Inte
     usuario: Prisma.$UsuarioPayload<ExtArgs>
     ra: Prisma.$RegiaoAdministrativaPayload<ExtArgs> | null
     solicitacoes: Prisma.$SolicitacaoAdocaoPayload<ExtArgs>[]
+    favoritos: Prisma.$FavoritoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1694,6 +1843,7 @@ export interface Prisma__PerfilAdotanteClient<T, Null = never, ExtArgs extends r
   usuario<T extends Prisma.UsuarioDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UsuarioDefaultArgs<ExtArgs>>): Prisma.Prisma__UsuarioClient<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   ra<T extends Prisma.PerfilAdotante$raArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PerfilAdotante$raArgs<ExtArgs>>): Prisma.Prisma__RegiaoAdministrativaClient<runtime.Types.Result.GetResult<Prisma.$RegiaoAdministrativaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   solicitacoes<T extends Prisma.PerfilAdotante$solicitacoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PerfilAdotante$solicitacoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SolicitacaoAdocaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoritos<T extends Prisma.PerfilAdotante$favoritosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PerfilAdotante$favoritosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2182,6 +2332,30 @@ export type PerfilAdotante$solicitacoesArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.SolicitacaoAdocaoScalarFieldEnum | Prisma.SolicitacaoAdocaoScalarFieldEnum[]
+}
+
+/**
+ * PerfilAdotante.favoritos
+ */
+export type PerfilAdotante$favoritosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Favorito
+   */
+  select?: Prisma.FavoritoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Favorito
+   */
+  omit?: Prisma.FavoritoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoritoInclude<ExtArgs> | null
+  where?: Prisma.FavoritoWhereInput
+  orderBy?: Prisma.FavoritoOrderByWithRelationInput | Prisma.FavoritoOrderByWithRelationInput[]
+  cursor?: Prisma.FavoritoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoritoScalarFieldEnum | Prisma.FavoritoScalarFieldEnum[]
 }
 
 /**

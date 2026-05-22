@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const BotaoFavorito = dynamic(() => import("@/components/BotaoFavorito"), { ssr: false });
 
 interface Animal {
   id: string;
@@ -159,21 +162,24 @@ export default function AnimalView() {
             <div>
               <div className="flex items-start justify-between gap-2">
                 <h1 className="text-3xl font-bold text-gray-900">{animal.nome}</h1>
-                <button
-                  onClick={() => {
-                    const url = window.location.href;
-                    if (navigator.share) {
-                      navigator.share({ title: `Adote ${animal.nome}`, text: `Conheça ${animal.nome} e ajude a encontrar um lar!`, url });
-                    } else {
-                      navigator.clipboard.writeText(url).then(() => alert("Link copiado!"));
-                    }
-                  }}
-                  className="shrink-0 p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
-                  title="Compartilhar"
-                  aria-label="Compartilhar"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                </button>
+                <div className="flex items-center gap-1 shrink-0">
+                  <BotaoFavorito animalId={animal.id} className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600" />
+                  <button
+                    onClick={() => {
+                      const url = window.location.href;
+                      if (navigator.share) {
+                        navigator.share({ title: `Adote ${animal.nome}`, text: `Conheça ${animal.nome} e ajude a encontrar um lar!`, url });
+                      } else {
+                        navigator.clipboard.writeText(url).then(() => alert("Link copiado!"));
+                      }
+                    }}
+                    className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+                    title="Compartilhar"
+                    aria-label="Compartilhar"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  </button>
+                </div>
               </div>
               <div className="text-gray-500 capitalize mt-1">
                 {animal.especie} • {animal.sexo} • {porteLabels[animal.porte]}

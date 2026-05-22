@@ -123,6 +123,7 @@ model Animal {
 
   fotos                 FotoAnimal[]
   solicitacoes          SolicitacaoAdocao[]
+  favoritos             Favorito[]
 
   @@index([status])
   @@index([especie])
@@ -168,8 +169,23 @@ model PerfilAdotante {
   updatedAt                DateTime @updatedAt @map("updated_at")
 
   solicitacoes  SolicitacaoAdocao[]
+  favoritos     Favorito[]
 
   @@map("perfis_adotantes")
+}
+
+// ─── Favoritos ────────────────────────────────────────────────────────────────
+model Favorito {
+  id         String        @id @default(uuid()) @db.Uuid
+  adotanteId String        @map("adotante_id") @db.Uuid
+  adotante   PerfilAdotante @relation(fields: [adotanteId], references: [id], onDelete: Cascade)
+  animalId   String        @map("animal_id") @db.Uuid
+  animal     Animal        @relation(fields: [animalId], references: [id], onDelete: Cascade)
+  createdAt  DateTime      @default(now()) @map("created_at")
+
+  @@unique([adotanteId, animalId])
+  @@index([adotanteId])
+  @@map("favoritos")
 }
 
 // ─── Mensagens internas ───────────────────────────────────────────────────────

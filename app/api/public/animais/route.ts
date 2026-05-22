@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
   const sexo = searchParams.get("sexo");
   const porte = searchParams.get("porte");
   const raId = searchParams.get("raId");
+  const q = searchParams.get("q")?.trim();
   const page = Math.max(1, Number(searchParams.get("page") ?? 1));
   const limit = Math.min(50, Math.max(1, Number(searchParams.get("limit") ?? 20)));
 
@@ -16,6 +17,7 @@ export async function GET(req: NextRequest) {
     ...(sexo && { sexo: sexo as "macho" | "femea" }),
     ...(porte && { porte: porte as "mini" | "pequeno" | "medio" | "grande" | "gigante" }),
     ...(raId && { raId: Number(raId) }),
+    ...(q && { nome: { contains: q, mode: "insensitive" as const } }),
   };
 
   const [animais, total] = await Promise.all([

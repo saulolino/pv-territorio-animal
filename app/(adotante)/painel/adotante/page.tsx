@@ -7,6 +7,25 @@ import dynamic from "next/dynamic";
 
 const Chat = dynamic(() => import("@/components/Chat"), { ssr: false });
 
+interface Favorito {
+  id: string;
+  animalId: string;
+  animal: {
+    slug: string;
+    nome: string;
+    especie: string;
+    sexo: string;
+    porte: string;
+    status: string;
+    fotos: { url: string }[];
+    ra: { nome: string; sigla: string } | null;
+  };
+}
+
+const porteLabels: Record<string, string> = {
+  mini: "Mini", pequeno: "Pequeno", medio: "Médio", grande: "Grande", gigante: "Gigante",
+};
+
 interface Solicitacao {
   id: string;
   status: string;
@@ -29,19 +48,24 @@ const statusLabels: Record<string, { label: string; color: string }> = {
 
 export default function PainelAdotantePage() {
   const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
+  const [favoritos, setFavoritos] = useState<Favorito[]>([]);
   const [loading, setLoading] = useState(true);
   const [meuId, setMeuId] = useState("");
   const [chatAberto, setChatAberto] = useState<string | null>(null);
+  const [aba, setAba] = useState<"solicitacoes" | "favoritos">("solicitacoes");
 
   useEffect(() => {
     fetch("/api/auth/me").then((r) => r.json()).then((me) => setMeuId(me.id ?? ""));
   }, []);
 
   useEffect(() => {
-    fetch("/api/solicitacoes")
-      .then((r) => r.json())
-      .then(setSolicitacoes)
-      .finally(() => setLoading(false));
+    Promise.all([
+      fetch("/api/solicitacoes").then((r) => r.json()),
+      fetch("/api/favoritos").then((r) => r.ok ? r.json() : []),
+    ]).then(([sols, favs]) => {
+      setSolicitacoes(sols);
+      setFavoritos(favs);
+    }).finally(() => setLoading(false));
   }, []);
 
   async function cancelar(id: string) {
@@ -55,32 +79,79 @@ export default function PainelAdotantePage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Minhas Solicitações</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-gray-900">Meu Painel</h1>
           <div className="flex gap-3">
-            <Link href="/animais" className="text-sm text-green-600 hover:underline">
-              Ver animais
-            </Link>
-            <Link href="/perfil/adotante" className="text-sm text-gray-500 hover:underline">
-              Meu perfil
-            </Link>
+            <Link href="/animais" className="text-sm text-green-600 hover:underline">Ver animais</Link>
+            <Link href="/perfil/adotante" className="text-sm text-gray-500 hover:underline">Meu perfil</Link>
           </div>
         </div>
 
-        {loading ? (
+        <div className="flex gap-1 mb-6 border-b border-gray-200">
+          {(["solicitacoes", "favoritos"] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setAba(t)}
+              className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                aba === t ? "border-green-600 text-green-700" : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {t === "solicitacoes" ? `Solicitações${solicitacoes.length > 0 ? ` (${solicitacoes.length})` : ""}` : `Favoritos${favoritos.length > 0 ? ` (${favoritos.length})` : ""}`}
+            </button>
+          ))}
+        </div>
+
+        {aba === "favoritos" && (
+          favoritos.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
+              <p className="text-gray-500 mb-4">Nenhum favorito ainda.</p>
+              <Link href="/animais" className="text-green-600 hover:underline text-sm font-medium">
+                Explorar animais →
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3">
+              {favoritos.map((f) => (
+                <Link key={f.id} href={`/animais/${f.animal.slug}`} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group">
+                  <div className="relative aspect-[4/3] bg-gray-100">
+                    {f.animal.fotos[0] ? (
+                      <Image src={f.animal.fotos[0].url} alt={f.animal.nome} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 50vw, 33vw" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-200 text-3xl">🐾</div>
+                    )}
+                    {f.animal.status !== "disponivel" && (
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <span className="text-white text-xs font-semibold bg-black/50 px-2 py-1 rounded">Indisponível</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <div className="font-semibold text-gray-900 text-sm">{f.animal.nome}</div>
+                    <div className="text-xs text-gray-500 mt-0.5 capitalize">
+                      {f.animal.especie} · {f.animal.sexo} · {porteLabels[f.animal.porte]}
+                    </div>
+                    {f.animal.ra && <div className="text-xs text-green-700 mt-0.5">{f.animal.ra.sigla}</div>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )
+        )}
+
+        {aba === "solicitacoes" && loading ? (
           <div className="space-y-3">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="bg-white rounded-xl border border-gray-200 h-24 animate-pulse" />
             ))}
           </div>
-        ) : solicitacoes.length === 0 ? (
+        ) : aba === "solicitacoes" && solicitacoes.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
             <p className="text-gray-500 mb-4">Nenhuma solicitação ainda.</p>
             <Link href="/animais" className="text-green-600 hover:underline text-sm font-medium">
               Encontrar um animal para adotar →
             </Link>
           </div>
-        ) : (
+        ) : aba === "solicitacoes" ? (
           <div className="space-y-3">
             {solicitacoes.map((s) => {
               const st = statusLabels[s.status] || { label: s.status, color: "bg-gray-100 text-gray-600" };
@@ -130,7 +201,7 @@ export default function PainelAdotantePage() {
               );
             })}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

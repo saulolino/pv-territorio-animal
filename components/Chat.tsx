@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface Mensagem {
   id: string;
@@ -22,11 +22,23 @@ export default function Chat({ solicitacaoId, meuId }: Props) {
   const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const fetchMensagens = useCallback(() => {
     fetch(`/api/mensagens?solicitacaoId=${solicitacaoId}`)
       .then((r) => r.json())
-      .then(setMensagens);
+      .then((novas: Mensagem[]) => {
+        setMensagens((prev) => {
+          if (novas.length !== prev.length) return novas;
+          return prev;
+        });
+      })
+      .catch(() => {});
   }, [solicitacaoId]);
+
+  useEffect(() => {
+    fetchMensagens();
+    const interval = setInterval(fetchMensagens, 10_000);
+    return () => clearInterval(interval);
+  }, [fetchMensagens]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });

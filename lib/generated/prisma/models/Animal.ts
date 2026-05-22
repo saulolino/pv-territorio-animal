@@ -376,6 +376,7 @@ export type AnimalWhereInput = {
   ra?: Prisma.XOR<Prisma.RegiaoAdministrativaNullableScalarRelationFilter, Prisma.RegiaoAdministrativaWhereInput> | null
   fotos?: Prisma.FotoAnimalListRelationFilter
   solicitacoes?: Prisma.SolicitacaoAdocaoListRelationFilter
+  favoritos?: Prisma.FavoritoListRelationFilter
 }
 
 export type AnimalOrderByWithRelationInput = {
@@ -407,6 +408,7 @@ export type AnimalOrderByWithRelationInput = {
   ra?: Prisma.RegiaoAdministrativaOrderByWithRelationInput
   fotos?: Prisma.FotoAnimalOrderByRelationAggregateInput
   solicitacoes?: Prisma.SolicitacaoAdocaoOrderByRelationAggregateInput
+  favoritos?: Prisma.FavoritoOrderByRelationAggregateInput
 }
 
 export type AnimalWhereUniqueInput = Prisma.AtLeast<{
@@ -441,6 +443,7 @@ export type AnimalWhereUniqueInput = Prisma.AtLeast<{
   ra?: Prisma.XOR<Prisma.RegiaoAdministrativaNullableScalarRelationFilter, Prisma.RegiaoAdministrativaWhereInput> | null
   fotos?: Prisma.FotoAnimalListRelationFilter
   solicitacoes?: Prisma.SolicitacaoAdocaoListRelationFilter
+  favoritos?: Prisma.FavoritoListRelationFilter
 }, "id" | "slug">
 
 export type AnimalOrderByWithAggregationInput = {
@@ -532,6 +535,7 @@ export type AnimalCreateInput = {
   ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAnimaisInput
   fotos?: Prisma.FotoAnimalCreateNestedManyWithoutAnimalInput
   solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalUncheckedCreateInput = {
@@ -561,6 +565,7 @@ export type AnimalUncheckedCreateInput = {
   updatedAt?: Date | string
   fotos?: Prisma.FotoAnimalUncheckedCreateNestedManyWithoutAnimalInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalUpdateInput = {
@@ -590,6 +595,7 @@ export type AnimalUpdateInput = {
   ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAnimaisNestedInput
   fotos?: Prisma.FotoAnimalUpdateManyWithoutAnimalNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalUncheckedUpdateInput = {
@@ -619,6 +625,7 @@ export type AnimalUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fotos?: Prisma.FotoAnimalUncheckedUpdateManyWithoutAnimalNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalCreateManyInput = {
@@ -924,6 +931,20 @@ export type AnimalUpdateOneRequiredWithoutFotosNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AnimalUpdateToOneWithWhereWithoutFotosInput, Prisma.AnimalUpdateWithoutFotosInput>, Prisma.AnimalUncheckedUpdateWithoutFotosInput>
 }
 
+export type AnimalCreateNestedOneWithoutFavoritosInput = {
+  create?: Prisma.XOR<Prisma.AnimalCreateWithoutFavoritosInput, Prisma.AnimalUncheckedCreateWithoutFavoritosInput>
+  connectOrCreate?: Prisma.AnimalCreateOrConnectWithoutFavoritosInput
+  connect?: Prisma.AnimalWhereUniqueInput
+}
+
+export type AnimalUpdateOneRequiredWithoutFavoritosNestedInput = {
+  create?: Prisma.XOR<Prisma.AnimalCreateWithoutFavoritosInput, Prisma.AnimalUncheckedCreateWithoutFavoritosInput>
+  connectOrCreate?: Prisma.AnimalCreateOrConnectWithoutFavoritosInput
+  upsert?: Prisma.AnimalUpsertWithoutFavoritosInput
+  connect?: Prisma.AnimalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AnimalUpdateToOneWithWhereWithoutFavoritosInput, Prisma.AnimalUpdateWithoutFavoritosInput>, Prisma.AnimalUncheckedUpdateWithoutFavoritosInput>
+}
+
 export type AnimalCreateNestedOneWithoutSolicitacoesInput = {
   create?: Prisma.XOR<Prisma.AnimalCreateWithoutSolicitacoesInput, Prisma.AnimalUncheckedCreateWithoutSolicitacoesInput>
   connectOrCreate?: Prisma.AnimalCreateOrConnectWithoutSolicitacoesInput
@@ -964,6 +985,7 @@ export type AnimalCreateWithoutRaInput = {
   protetor: Prisma.PerfilProtetorCreateNestedOneWithoutAnimaisInput
   fotos?: Prisma.FotoAnimalCreateNestedManyWithoutAnimalInput
   solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalUncheckedCreateWithoutRaInput = {
@@ -992,6 +1014,7 @@ export type AnimalUncheckedCreateWithoutRaInput = {
   updatedAt?: Date | string
   fotos?: Prisma.FotoAnimalUncheckedCreateNestedManyWithoutAnimalInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalCreateOrConnectWithoutRaInput = {
@@ -1076,6 +1099,7 @@ export type AnimalCreateWithoutProtetorInput = {
   ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAnimaisInput
   fotos?: Prisma.FotoAnimalCreateNestedManyWithoutAnimalInput
   solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalUncheckedCreateWithoutProtetorInput = {
@@ -1104,6 +1128,7 @@ export type AnimalUncheckedCreateWithoutProtetorInput = {
   updatedAt?: Date | string
   fotos?: Prisma.FotoAnimalUncheckedCreateNestedManyWithoutAnimalInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalCreateOrConnectWithoutProtetorInput = {
@@ -1158,6 +1183,7 @@ export type AnimalCreateWithoutFotosInput = {
   protetor: Prisma.PerfilProtetorCreateNestedOneWithoutAnimaisInput
   ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAnimaisInput
   solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalUncheckedCreateWithoutFotosInput = {
@@ -1186,6 +1212,7 @@ export type AnimalUncheckedCreateWithoutFotosInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalCreateOrConnectWithoutFotosInput = {
@@ -1230,6 +1257,7 @@ export type AnimalUpdateWithoutFotosInput = {
   protetor?: Prisma.PerfilProtetorUpdateOneRequiredWithoutAnimaisNestedInput
   ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAnimaisNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalUncheckedUpdateWithoutFotosInput = {
@@ -1257,6 +1285,139 @@ export type AnimalUncheckedUpdateWithoutFotosInput = {
   destaque?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAnimalNestedInput
+}
+
+export type AnimalCreateWithoutFavoritosInput = {
+  id?: string
+  slug: string
+  nome: string
+  especie: $Enums.EspecieAnimal
+  raca?: string | null
+  sexo: $Enums.SexoAnimal
+  idadeEstimadaMeses?: number | null
+  porte: $Enums.PorteAnimal
+  cor?: string | null
+  descricao: string
+  castrado?: boolean | null
+  vacinado?: boolean | null
+  vermifugado?: boolean | null
+  microchipado?: boolean
+  necessidadesEspeciais?: string | null
+  bomComCriancas?: boolean | null
+  bomComOutrosAnimais?: boolean | null
+  bomComGatos?: boolean | null
+  status?: $Enums.StatusAnimal
+  destaque?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  protetor: Prisma.PerfilProtetorCreateNestedOneWithoutAnimaisInput
+  ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAnimaisInput
+  fotos?: Prisma.FotoAnimalCreateNestedManyWithoutAnimalInput
+  solicitacoes?: Prisma.SolicitacaoAdocaoCreateNestedManyWithoutAnimalInput
+}
+
+export type AnimalUncheckedCreateWithoutFavoritosInput = {
+  id?: string
+  slug: string
+  protetorId: string
+  nome: string
+  especie: $Enums.EspecieAnimal
+  raca?: string | null
+  sexo: $Enums.SexoAnimal
+  idadeEstimadaMeses?: number | null
+  porte: $Enums.PorteAnimal
+  cor?: string | null
+  descricao: string
+  castrado?: boolean | null
+  vacinado?: boolean | null
+  vermifugado?: boolean | null
+  microchipado?: boolean
+  necessidadesEspeciais?: string | null
+  bomComCriancas?: boolean | null
+  bomComOutrosAnimais?: boolean | null
+  bomComGatos?: boolean | null
+  raId?: number | null
+  status?: $Enums.StatusAnimal
+  destaque?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fotos?: Prisma.FotoAnimalUncheckedCreateNestedManyWithoutAnimalInput
+  solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedCreateNestedManyWithoutAnimalInput
+}
+
+export type AnimalCreateOrConnectWithoutFavoritosInput = {
+  where: Prisma.AnimalWhereUniqueInput
+  create: Prisma.XOR<Prisma.AnimalCreateWithoutFavoritosInput, Prisma.AnimalUncheckedCreateWithoutFavoritosInput>
+}
+
+export type AnimalUpsertWithoutFavoritosInput = {
+  update: Prisma.XOR<Prisma.AnimalUpdateWithoutFavoritosInput, Prisma.AnimalUncheckedUpdateWithoutFavoritosInput>
+  create: Prisma.XOR<Prisma.AnimalCreateWithoutFavoritosInput, Prisma.AnimalUncheckedCreateWithoutFavoritosInput>
+  where?: Prisma.AnimalWhereInput
+}
+
+export type AnimalUpdateToOneWithWhereWithoutFavoritosInput = {
+  where?: Prisma.AnimalWhereInput
+  data: Prisma.XOR<Prisma.AnimalUpdateWithoutFavoritosInput, Prisma.AnimalUncheckedUpdateWithoutFavoritosInput>
+}
+
+export type AnimalUpdateWithoutFavoritosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  especie?: Prisma.EnumEspecieAnimalFieldUpdateOperationsInput | $Enums.EspecieAnimal
+  raca?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sexo?: Prisma.EnumSexoAnimalFieldUpdateOperationsInput | $Enums.SexoAnimal
+  idadeEstimadaMeses?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  porte?: Prisma.EnumPorteAnimalFieldUpdateOperationsInput | $Enums.PorteAnimal
+  cor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descricao?: Prisma.StringFieldUpdateOperationsInput | string
+  castrado?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  vacinado?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  vermifugado?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  microchipado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  necessidadesEspeciais?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bomComCriancas?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  bomComOutrosAnimais?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  bomComGatos?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  status?: Prisma.EnumStatusAnimalFieldUpdateOperationsInput | $Enums.StatusAnimal
+  destaque?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  protetor?: Prisma.PerfilProtetorUpdateOneRequiredWithoutAnimaisNestedInput
+  ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAnimaisNestedInput
+  fotos?: Prisma.FotoAnimalUpdateManyWithoutAnimalNestedInput
+  solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAnimalNestedInput
+}
+
+export type AnimalUncheckedUpdateWithoutFavoritosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  protetorId?: Prisma.StringFieldUpdateOperationsInput | string
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  especie?: Prisma.EnumEspecieAnimalFieldUpdateOperationsInput | $Enums.EspecieAnimal
+  raca?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sexo?: Prisma.EnumSexoAnimalFieldUpdateOperationsInput | $Enums.SexoAnimal
+  idadeEstimadaMeses?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  porte?: Prisma.EnumPorteAnimalFieldUpdateOperationsInput | $Enums.PorteAnimal
+  cor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  descricao?: Prisma.StringFieldUpdateOperationsInput | string
+  castrado?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  vacinado?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  vermifugado?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  microchipado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  necessidadesEspeciais?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bomComCriancas?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  bomComOutrosAnimais?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  bomComGatos?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  raId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumStatusAnimalFieldUpdateOperationsInput | $Enums.StatusAnimal
+  destaque?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fotos?: Prisma.FotoAnimalUncheckedUpdateManyWithoutAnimalNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAnimalNestedInput
 }
 
@@ -1286,6 +1447,7 @@ export type AnimalCreateWithoutSolicitacoesInput = {
   protetor: Prisma.PerfilProtetorCreateNestedOneWithoutAnimaisInput
   ra?: Prisma.RegiaoAdministrativaCreateNestedOneWithoutAnimaisInput
   fotos?: Prisma.FotoAnimalCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalUncheckedCreateWithoutSolicitacoesInput = {
@@ -1314,6 +1476,7 @@ export type AnimalUncheckedCreateWithoutSolicitacoesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   fotos?: Prisma.FotoAnimalUncheckedCreateNestedManyWithoutAnimalInput
+  favoritos?: Prisma.FavoritoUncheckedCreateNestedManyWithoutAnimalInput
 }
 
 export type AnimalCreateOrConnectWithoutSolicitacoesInput = {
@@ -1358,6 +1521,7 @@ export type AnimalUpdateWithoutSolicitacoesInput = {
   protetor?: Prisma.PerfilProtetorUpdateOneRequiredWithoutAnimaisNestedInput
   ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAnimaisNestedInput
   fotos?: Prisma.FotoAnimalUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalUncheckedUpdateWithoutSolicitacoesInput = {
@@ -1386,6 +1550,7 @@ export type AnimalUncheckedUpdateWithoutSolicitacoesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fotos?: Prisma.FotoAnimalUncheckedUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalCreateManyRaInput = {
@@ -1440,6 +1605,7 @@ export type AnimalUpdateWithoutRaInput = {
   protetor?: Prisma.PerfilProtetorUpdateOneRequiredWithoutAnimaisNestedInput
   fotos?: Prisma.FotoAnimalUpdateManyWithoutAnimalNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalUncheckedUpdateWithoutRaInput = {
@@ -1468,6 +1634,7 @@ export type AnimalUncheckedUpdateWithoutRaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fotos?: Prisma.FotoAnimalUncheckedUpdateManyWithoutAnimalNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalUncheckedUpdateManyWithoutRaInput = {
@@ -1548,6 +1715,7 @@ export type AnimalUpdateWithoutProtetorInput = {
   ra?: Prisma.RegiaoAdministrativaUpdateOneWithoutAnimaisNestedInput
   fotos?: Prisma.FotoAnimalUpdateManyWithoutAnimalNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalUncheckedUpdateWithoutProtetorInput = {
@@ -1576,6 +1744,7 @@ export type AnimalUncheckedUpdateWithoutProtetorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fotos?: Prisma.FotoAnimalUncheckedUpdateManyWithoutAnimalNestedInput
   solicitacoes?: Prisma.SolicitacaoAdocaoUncheckedUpdateManyWithoutAnimalNestedInput
+  favoritos?: Prisma.FavoritoUncheckedUpdateManyWithoutAnimalNestedInput
 }
 
 export type AnimalUncheckedUpdateManyWithoutProtetorInput = {
@@ -1612,11 +1781,13 @@ export type AnimalUncheckedUpdateManyWithoutProtetorInput = {
 export type AnimalCountOutputType = {
   fotos: number
   solicitacoes: number
+  favoritos: number
 }
 
 export type AnimalCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   fotos?: boolean | AnimalCountOutputTypeCountFotosArgs
   solicitacoes?: boolean | AnimalCountOutputTypeCountSolicitacoesArgs
+  favoritos?: boolean | AnimalCountOutputTypeCountFavoritosArgs
 }
 
 /**
@@ -1641,6 +1812,13 @@ export type AnimalCountOutputTypeCountFotosArgs<ExtArgs extends runtime.Types.Ex
  */
 export type AnimalCountOutputTypeCountSolicitacoesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SolicitacaoAdocaoWhereInput
+}
+
+/**
+ * AnimalCountOutputType without action
+ */
+export type AnimalCountOutputTypeCountFavoritosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoritoWhereInput
 }
 
 
@@ -1673,6 +1851,7 @@ export type AnimalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   ra?: boolean | Prisma.Animal$raArgs<ExtArgs>
   fotos?: boolean | Prisma.Animal$fotosArgs<ExtArgs>
   solicitacoes?: boolean | Prisma.Animal$solicitacoesArgs<ExtArgs>
+  favoritos?: boolean | Prisma.Animal$favoritosArgs<ExtArgs>
   _count?: boolean | Prisma.AnimalCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["animal"]>
 
@@ -1767,6 +1946,7 @@ export type AnimalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   ra?: boolean | Prisma.Animal$raArgs<ExtArgs>
   fotos?: boolean | Prisma.Animal$fotosArgs<ExtArgs>
   solicitacoes?: boolean | Prisma.Animal$solicitacoesArgs<ExtArgs>
+  favoritos?: boolean | Prisma.Animal$favoritosArgs<ExtArgs>
   _count?: boolean | Prisma.AnimalCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AnimalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1785,6 +1965,7 @@ export type $AnimalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     ra: Prisma.$RegiaoAdministrativaPayload<ExtArgs> | null
     fotos: Prisma.$FotoAnimalPayload<ExtArgs>[]
     solicitacoes: Prisma.$SolicitacaoAdocaoPayload<ExtArgs>[]
+    favoritos: Prisma.$FavoritoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2209,6 +2390,7 @@ export interface Prisma__AnimalClient<T, Null = never, ExtArgs extends runtime.T
   ra<T extends Prisma.Animal$raArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Animal$raArgs<ExtArgs>>): Prisma.Prisma__RegiaoAdministrativaClient<runtime.Types.Result.GetResult<Prisma.$RegiaoAdministrativaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   fotos<T extends Prisma.Animal$fotosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Animal$fotosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FotoAnimalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   solicitacoes<T extends Prisma.Animal$solicitacoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Animal$solicitacoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SolicitacaoAdocaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoritos<T extends Prisma.Animal$favoritosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Animal$favoritosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2727,6 +2909,30 @@ export type Animal$solicitacoesArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.SolicitacaoAdocaoScalarFieldEnum | Prisma.SolicitacaoAdocaoScalarFieldEnum[]
+}
+
+/**
+ * Animal.favoritos
+ */
+export type Animal$favoritosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Favorito
+   */
+  select?: Prisma.FavoritoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Favorito
+   */
+  omit?: Prisma.FavoritoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoritoInclude<ExtArgs> | null
+  where?: Prisma.FavoritoWhereInput
+  orderBy?: Prisma.FavoritoOrderByWithRelationInput | Prisma.FavoritoOrderByWithRelationInput[]
+  cursor?: Prisma.FavoritoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoritoScalarFieldEnum | Prisma.FavoritoScalarFieldEnum[]
 }
 
 /**
