@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "pv-territorio-animal",
       script: "node_modules/.bin/next",
-      args: "start",
+      args: "start -H 127.0.0.1",
       cwd: "/data/www/projects/pv-territorio-animal",
       instances: 1,
       exec_mode: "fork",

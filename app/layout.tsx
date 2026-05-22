@@ -4,13 +4,17 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pets.lino.app.br";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: {
-    default: "PV Território Animal",
+    default: "PV Território Animal — Adoção responsável no DF",
     template: "%s | PV Território Animal",
   },
   description:
     "Adoção responsável de animais no Distrito Federal. Conectamos protetores, abrigos e adotantes comprometidos.",
+  keywords: ["adoção de animais", "cachorro para adoção", "gato para adoção", "Brasília", "DF", "Partido Verde"],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -21,10 +25,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "PV Território Animal",
-    title: "PV Território Animal",
-    description:
-      "Adoção responsável de animais no DF — uma iniciativa do Partido Verde.",
+    title: "PV Território Animal — Adoção responsável no DF",
+    description: "Adoção responsável de animais no DF — uma iniciativa do Partido Verde.",
+    url: BASE_URL,
+    locale: "pt_BR",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "PV Território Animal",
+    description: "Adoção responsável de animais no Distrito Federal.",
+  },
+  robots: { index: true, follow: true },
   icons: {
     icon: "/icons/icon-192x192.png",
     apple: "/icons/icon-192x192.png",

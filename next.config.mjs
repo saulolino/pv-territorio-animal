@@ -1,8 +1,7 @@
-import withPWA from "next-pwa";
+import withPWA from "@ducanh2912/next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Ensure uploads are served correctly
   async headers() {
     return [
       {
@@ -17,5 +16,5 @@ export default withPWA({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
   register: true,
-  skipWaiting: true,
+  workboxOptions: { disableDevLogs: true },
 })(nextConfig);
